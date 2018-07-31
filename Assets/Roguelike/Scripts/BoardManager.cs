@@ -10,6 +10,8 @@ namespace Completed
 	public class BoardManager : MonoBehaviour
 	{
 		// Using Serializable allows us to embed a class with sub properties in the inspector.
+        // This is a cool way to be able use the inspector to add or remove objects at your leisure. 
+        // I was able to play around and get interesting level design out of this.
 		[Serializable]
 		public class Count
 		{
@@ -28,7 +30,7 @@ namespace Completed
 		
 		public int columns = 10; 										//Number of columns in our game board.
 		public int rows = 10;											//Number of rows in our game board.
-		public Count wallCount = new Count (12, 12);					//Lower and upper limit for our random number of walls per level.
+		public Count wallCount = new Count (10, 20);					//Lower and upper limit for our random number of walls per level.
 		public Count foodCount = new Count (4, 6);						//Lower and upper limit for our random number of food items per level.
 		public GameObject exit;											//Prefab to spawn for exit.
 		public GameObject[] floorTiles;									//Array of floor prefabs.
@@ -76,6 +78,7 @@ namespace Completed
 					GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length)];
 					
 					//Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
+                    //This is a bounds check to make legal actions.
 					if(x == -1 || x == columns || y == -1 || y == rows)
 						toInstantiate = outerWallTiles [Random.Range (0, outerWallTiles.Length)];
 					
@@ -91,6 +94,8 @@ namespace Completed
 		
 		
 		//RandomPosition returns a random position from our list gridPositions.
+        //This is the primary position generator. It gets a range within the grid
+        //then sets it and then takes it off the list. 
 		Vector3 RandomPosition ()
 		{
 			//Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
